@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets, generics
+from rest_framework.response import Response
+
 from core.models import ChatRoom, Message
 from chat.serializers import ChatRoomSerializer, MessageSerializer
 from rest_framework.authentication import TokenAuthentication
@@ -11,6 +13,11 @@ class ChatRoomViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     queryset = ChatRoom.objects.all()
     serializer_class = ChatRoomSerializer
+
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        instance = response.data
+        return Response({'status': 'success', 'instance': instance})
 
 
 class MessageViewSet(viewsets.ModelViewSet):
