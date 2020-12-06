@@ -5,7 +5,7 @@ from chat import views
 
 router = DefaultRouter()
 router.register('room', views.ChatRoomViewSet)
-router.register('messages', views.MessageViewSet)
+router.register('messages', views.MessageViewSet, basename='Message')
 
 app_name = 'chat'
 
