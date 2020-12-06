@@ -24,13 +24,13 @@ class MessageViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
     serializer_class = MessageSerializer
-    queryset = Message.objects.all()
 
     def get_queryset(self):
         room_name = self.request.query_params.get('chat_room')
-        filter_room = ChatRoom.objects.get(name=room_name)
-        if room_name is not None:
-            queryset = Message.objects.filter(room=filter_room)
+        filter_room = ChatRoom.objects.filter(name=room_name)
+        queryset = []
+        if room_name is not None and filter_room.exists():
+            queryset = Message.objects.filter(room=filter_room[0])
 
         return queryset
 
