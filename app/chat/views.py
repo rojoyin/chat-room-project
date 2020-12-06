@@ -27,10 +27,9 @@ class MessageViewSet(viewsets.ModelViewSet):
     queryset = Message.objects.all()
 
     def get_queryset(self):
+        print('self.request>>>>>>>>>>>>>>', self.request)
         room_name = self.request.query_params.get('chat_room')
-        filter_room = ChatRoom.objects.create(
-            name=room_name
-        )
+        filter_room = ChatRoom.objects.get(name=room_name)
         if room_name is not None:
             queryset = Message.objects.filter(room=filter_room)
 
