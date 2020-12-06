@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import viewsets, generics
+from rest_framework import viewsets, status
 from rest_framework.response import Response
 
 from core.models import ChatRoom, Message
@@ -35,3 +35,10 @@ class MessageViewSet(viewsets.ModelViewSet):
             queryset = Message.objects.filter(room=filter_room)
 
         return queryset
+
+    def create(self, request, *args, **kwargs):
+        user = request.user
+        room = ChatRoom.objects.get(name=request.data['room'])
+        content = request.data['content']
+        Message.objects.create(user=user, room=room, content=content)
+        return Response({'status': 'success'}, status=status.HTTP_200_OK)
