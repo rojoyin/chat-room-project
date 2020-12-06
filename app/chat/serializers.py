@@ -13,5 +13,5 @@ class ChatRoomSerializer(serializers.ModelSerializer):
 class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
-        fields = ('id', 'user', 'room', 'content', 'created_on')
+        fields = ('id', 'user', 'content', 'created_on')
         read_only_fields = ('id',)
