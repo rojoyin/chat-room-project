@@ -7,6 +7,28 @@
     {% endfor %}
 </textarea>
 
-<textarea rows="3" cols="80" placeholder="Write a new message...">
+<textarea rows="3" cols="80" placeholder="Write a new message..." id="messageToSend">
 </textarea>
-<button type="submit">SendMessage</button>
+<button onclick="postMessage()">SendMessage</button>
+
+<script>
+    function postMessage() {
+		let messageContent = document.getElementById('messageToSend').value;
+		const data = JSON.stringify({
+			"room": "default",
+			"content": messageContent
+		});
+		const xhr = new XMLHttpRequest();
+		xhr.withCredentials = true;
+		xhr.addEventListener("readystatechange", function () {
+		  if (this.readyState === this.DONE) {
+			console.log(this.responseText);
+		  }
+		});
+		xhr.open("POST", "http://localhost:8000/api/chat/messages/");
+		xhr.setRequestHeader("Content-Type", "application/json");
+		xhr.setRequestHeader("Authorization", "Token b3f8b1d563cd546ab3025f3cf449e1495676b486");
+		xhr.send(data);
+		document.getElementById('messageToSend').value = '';
+    }
+</script>
