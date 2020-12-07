@@ -8,6 +8,8 @@ import json
 
 from .serializers import UserSerializer
 
+token = ''
+
 
 class CreateUserView(generics.CreateAPIView):
     serializer_class = UserSerializer
@@ -25,6 +27,16 @@ def login(request):
             user = authenticate(username=username, password=password)
 
             if user is not None:
+                url = "http://localhost:8000/auth/"
+                payload = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"username\"\r\n\r\n{username}\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"password\"\r\n\r\n{password}\r\n-----011000010111000001101001--\r\n".format(username=username, password=password)
+                headers = {
+                    'Content-Type': "multipart/form-data",
+                    'content-type': "multipart/form-data; boundary=---011000010111000001101001"
+                }
+                response = requests.request("POST", url, data=payload, headers=headers)
+                global token
+                token = json.loads(response.text)['token']
+
                 do_login(request, user)
                 return redirect('/room/default')
 
@@ -49,8 +61,10 @@ def chatroom_messages(request):
     querystring = {"chat_room": "default"}
 
     payload = ""
-    headers = {'Authorization': 'Token b3f8b1d563cd546ab3025f3cf449e1495676b486'}
+    headers = {'Authorization': 'Token {0}'.format(token)}
+    print(headers)
 
     response = requests.request("GET", url, data=payload, headers=headers, params=querystring)
 
-    return render(request, "chatroom.html", {'chat_messages': json.loads(response.text), 'room_name': 'default'})
+    return render(request, "chatroom.html", {'chat_messages': json.loads(response.text), 'room_name': 'default',
+                                             'token': token})

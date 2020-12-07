@@ -1,5 +1,5 @@
 <h2>Chatroom: {{room_name}}</h2>
-<meta http-equiv="refresh" content="5" >
+<!--<meta http-equiv="refresh" content="5" >-->
 
 <textarea rows="10" cols="80">
     {%  for message in chat_messages %}
@@ -13,6 +13,9 @@
 <button onclick="postMessage()">SendMessage</button>
 
 <script>
+    user_token = '{{ token }}'
+    document.user_token = user_token;
+    console.log('>>>>>>>>>>>>>>>>>>>>>>>', user_token);
     function postMessage() {
 		let messageContent = document.getElementById('messageToSend').value;
 		const data = JSON.stringify({
@@ -28,7 +31,7 @@
 		});
 		xhr.open("POST", "http://localhost:8000/api/chat/messages/");
 		xhr.setRequestHeader("Content-Type", "application/json");
-		xhr.setRequestHeader("Authorization", "Token b3f8b1d563cd546ab3025f3cf449e1495676b486");
+		xhr.setRequestHeader("Authorization", `Token ${user_token}`);
 		xhr.send(data);
 		document.getElementById('messageToSend').value = '';
     }
