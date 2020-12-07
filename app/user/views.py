@@ -3,6 +3,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login as do_login
+import requests
+import json
 
 from .serializers import UserSerializer
 
@@ -39,3 +41,16 @@ def signup(request):
                 return redirect('/login')
 
     return render(request, "signup.html", {'signup_form': form})
+
+
+def chatroom_messages(request):
+    url = "http://localhost:8000/api/chat/messages/"
+
+    querystring = {"chat_room": "default"}
+
+    payload = ""
+    headers = {'Authorization': 'Token b3f8b1d563cd546ab3025f3cf449e1495676b486'}
+
+    response = requests.request("GET", url, data=payload, headers=headers, params=querystring)
+
+    return render(request, "chatroom.html", {'chat_messages': json.loads(response.text), 'room_name': 'default'})

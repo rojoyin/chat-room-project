@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.authtoken.views import obtain_auth_token
-from user.views import login, signup
+from user.views import login, signup, chatroom_messages
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -10,5 +10,5 @@ urlpatterns = [
     path('auth/', obtain_auth_token),
     path('login/', login, name='login'),
     path('signup/', signup, name='signup'),
-    path('room/default', signup, name='chatroom'),
+    path('room/default', chatroom_messages, name='chatroom'),
 ]

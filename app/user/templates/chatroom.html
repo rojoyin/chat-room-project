@@ -1,0 +1,12 @@
+<h2>Chatroom: {{room_name}}</h2>
+
+<textarea rows="10" cols="80">
+    {%  for message in chat_messages %}
+    user:{{message.user}}[{{message.created_on}}]
+    {{message.content}}
+    {% endfor %}
+</textarea>
+
+<textarea rows="3" cols="80" placeholder="Write a new message...">
+</textarea>
+<button type="submit">SendMessage</button>
