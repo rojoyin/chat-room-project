@@ -10,5 +10,5 @@ urlpatterns = [
     path('auth/', obtain_auth_token),
     path('login/', login, name='login'),
     path('signup/', signup, name='signup'),
-    path('room/default', signup, name='signup'),
+    path('room/default', signup, name='chatroom'),
 ]
