@@ -30,9 +30,10 @@ class MessageViewSet(viewsets.ModelViewSet):
         filter_room = ChatRoom.objects.filter(name=room_name)
         queryset = []
         if room_name is not None and filter_room.exists():
-            queryset = Message.objects.filter(room=filter_room[0]).order_by('-created_on')[:50]
+            queryset = Message.objects.filter(room=filter_room[0])\
+                           .order_by('-created_on')[:50]
 
-        return queryset
+        return sorted(queryset, key=lambda record: record.created_on)
 
     def create(self, request, *args, **kwargs):
         user = request.user
