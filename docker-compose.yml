@@ -1,12 +1,31 @@
 version: '3'
 
 services:
- app:
-   build:
-     context: ./app
-   ports:
-     - "8000:8000"
-   volumes:
-     - ./app:/app
-   command: >
-     sh -c "python manage.py runserver 0.0.0.0:8000"
+  app:
+    build:
+      context: ./app
+    ports:
+      - "8000:8000"
+    expose:
+      - "8000"
+    volumes:
+      - ./app:/app
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000"
+    networks:
+      - default
+  bot:
+    restart: always
+    build:
+      context: ./bot
+    volumes:
+      - ./bot:/bot
+    command: >
+      sh -c "python bot/MessageConsumer.py"
+    depends_on:
+      - app
+    networks:
+      - default
+
+networks:
+    default:
