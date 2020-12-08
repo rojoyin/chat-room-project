@@ -24,6 +24,7 @@ services:
       sh -c "python bot/BotManager.py"
     depends_on:
       - app
+      - redis
     networks:
       - default
   redis:
@@ -38,5 +39,18 @@ services:
       - $PWD/redis.conf:/usr/local/etc/redis/redis.conf
     environment:
      - REDIS_REPLICATION_MODE=master
+  consumers:
+    restart: always
+    build:
+      context: ./consumers
+    volumes:
+      - ./consumers:/consumers
+    command: >
+      sh -c "python redis/MessageConsumer.py"
+    depends_on:
+      - app
+      - redis
+    networks:
+      - default
 networks:
     default:
