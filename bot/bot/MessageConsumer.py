@@ -54,12 +54,3 @@ for entry in not_processed_commands:
                 .format(company=company, close_price=close_price)
 
             print(message_to_post)
-
-
-# print(not_processed_commands)
-
-
-# Parse messages and make api calls for /stocks
-
-
-# Save messages to database
