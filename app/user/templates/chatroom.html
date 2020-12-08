@@ -47,8 +47,8 @@ user:{{message.user.username}}[{{message.created_on}}]
             const formattedRecords = data.map((datum)=> {
                 return `user:${datum.user.username}:${datum.created_on}\n${datum.content}\n`;
             });
-            document.getElementById('chatHistory').value = '';
-            document.getElementById('chatHistory').value += formattedRecords.join('\n');
+            document.getElementById('chatHistory').value = formattedRecords.join('\n');
+            document.getElementById('chatHistory').value += '\n';
         })
         .catch(err => {
             console.error(err);
