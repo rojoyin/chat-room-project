@@ -1,13 +1,16 @@
 # Authentication
 import requests
-import json,time
+import json
+import time
+import re
+import csv
 
 time.sleep(5)
 
 api_base_url = 'http://app'
+stock_query_url = 'https://stooq.com/q/l/?s={stock_code}&f=sd2t2ohlcv&h&e=csv'
 
 auth_url = "{api_base_url}:8000/auth/".format(api_base_url=api_base_url)
-print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', auth_url)
 token = ''
 
 bot_user = 'bot'
@@ -29,12 +32,31 @@ token = json.loads(response.text)['token']
 # Recover messages
 messages_url = "{api_base_url}:8000/api/chat/messages/".format(api_base_url=api_base_url)
 querystring = {"chat_room": "default"}
-payload = ""
 headers = {'Authorization': 'Token {token}'.format(token=token)}
 response = requests.request("GET", messages_url, data=payload, headers=headers, params=querystring)
-not_processed_messages = [message for message in json.loads(response.text) if not message['processed_by_bot']]
+not_processed_commands = [message for message in json.loads(response.text) if not message['processed_by_bot']
+                          and message['content'].startswith('/')]
 
-print(len(not_processed_messages))
+for entry in not_processed_commands:
+    command_regex = r'\/(.*)=(.*)'
+    matches = re.search(command_regex, entry['content'])
+    if matches is not None:
+        command = matches.group(1)
+        argument = matches.group(2)
+
+        if command == 'stock':
+            stock_response = requests.request("GET", stock_query_url.format(stock_code=argument),
+                                              params=querystring)
+            stock_information = stock_response.text.split('\n')[1].split(',')
+            company = stock_information[0]
+            close_price = stock_information[6]
+            message_to_post = '{company} quote is ${close_price} per share'\
+                .format(company=company, close_price=close_price)
+
+            print(message_to_post)
+
+
+# print(not_processed_commands)
 
 
 # Parse messages and make api calls for /stocks
