@@ -21,7 +21,7 @@ services:
     volumes:
       - ./bot:/bot
     command: >
-      sh -c "python bot/MessageConsumer.py"
+      sh -c "python bot/BotManager.py"
     depends_on:
       - app
     networks:
