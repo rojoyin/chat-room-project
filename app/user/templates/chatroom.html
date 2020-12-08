@@ -1,11 +1,11 @@
 <h2>Chatroom: {{room_name}}</h2>
 <!--<meta http-equiv="refresh" content="5" >-->
 
-<textarea rows="10" cols="80">
-    {%  for message in chat_messages %}
-    user:{{message.user}}[{{message.created_on}}]
-    {{message.content}}
-    {% endfor %}
+<textarea rows="10" cols="80" id="chatHistory">
+{%  for message in chat_messages %}
+user:{{message.user}}[{{message.created_on}}]
+{{message.content}}
+{% endfor %}
 </textarea>
 
 <textarea rows="3" cols="80" placeholder="Write a new message..." id="messageToSend">
@@ -15,7 +15,6 @@
 <script>
     user_token = '{{ token }}'
     document.user_token = user_token;
-    console.log('>>>>>>>>>>>>>>>>>>>>>>>', user_token);
     function postMessage() {
 		let messageContent = document.getElementById('messageToSend').value;
 		const data = JSON.stringify({
@@ -26,7 +25,7 @@
 		xhr.withCredentials = true;
 		xhr.addEventListener("readystatechange", function () {
 		  if (this.readyState === this.DONE) {
-		    location.reload();
+		    fetchMessages();
 		  }
 		});
 		xhr.open("POST", "http://localhost:8000/api/chat/messages/");
@@ -34,5 +33,25 @@
 		xhr.setRequestHeader("Authorization", `Token ${user_token}`);
 		xhr.send(data);
 		document.getElementById('messageToSend').value = '';
+    }
+
+    function fetchMessages() {
+        fetch("http://localhost:8000/api/chat/messages/?chat_room=default", {
+          "method": "GET",
+          "headers": {
+            "Authorization": `Token ${document.user_token}`
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+            const formattedRecords = data.map((datum)=> {
+                return `user:${datum.user}:${datum.created_on}\n${datum.content}\n`;
+            });
+            document.getElementById('chatHistory').value = '';
+            document.getElementById('chatHistory').value += formattedRecords.join('\n');
+        })
+        .catch(err => {
+            console.error(err);
+        });
     }
 </script>
