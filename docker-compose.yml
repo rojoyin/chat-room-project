@@ -26,6 +26,17 @@ services:
       - app
     networks:
       - default
-
+  redis:
+    image: "redis:alpine"
+    command: redis-server --requirepass password
+    ports:
+     - "6379:6379"
+    networks:
+      default:
+    volumes:
+      - $PWD/redis-data:/var/lib/redis
+      - $PWD/redis.conf:/usr/local/etc/redis/redis.conf
+    environment:
+     - REDIS_REPLICATION_MODE=master
 networks:
     default:
