@@ -2,7 +2,7 @@
 
 <textarea rows="10" cols="80" id="chatHistory">
 {%  for message in chat_messages %}
-user:{{message.user}}[{{message.created_on}}]
+user:{{message.user.username}}[{{message.created_on}}]
 {{message.content}}
 {% endfor %}
 </textarea>
@@ -44,7 +44,7 @@ user:{{message.user}}[{{message.created_on}}]
         .then(response => response.json())
         .then(data => {
             const formattedRecords = data.map((datum)=> {
-                return `user:${datum.user}:${datum.created_on}\n${datum.content}\n`;
+                return `user:${datum.user.username}:${datum.created_on}\n${datum.content}\n`;
             });
             document.getElementById('chatHistory').value = '';
             document.getElementById('chatHistory').value += formattedRecords.join('\n');
