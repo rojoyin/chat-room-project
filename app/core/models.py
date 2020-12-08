@@ -14,3 +14,4 @@ class Message(models.Model):
     room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE)
     content = models.CharField(max_length=512)
     created_on = models.DateTimeField(auto_now_add=True, editable=False)
+    processed_by_bot = models.BooleanField(default=False)
