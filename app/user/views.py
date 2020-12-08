@@ -9,6 +9,7 @@ import json
 from .serializers import UserSerializer
 
 token = ''
+auth_user = ''
 
 
 class CreateUserView(generics.CreateAPIView):
@@ -35,7 +36,9 @@ def login(request):
                 }
                 response = requests.request("POST", url, data=payload, headers=headers)
                 global token
+                global auth_user
                 token = json.loads(response.text)['token']
+                auth_user = username
 
                 do_login(request, user)
                 return redirect('/room/default')
@@ -62,9 +65,8 @@ def chatroom_messages(request):
 
     payload = ""
     headers = {'Authorization': 'Token {0}'.format(token)}
-    print(headers)
 
     response = requests.request("GET", url, data=payload, headers=headers, params=querystring)
 
     return render(request, "chatroom.html", {'chat_messages': json.loads(response.text), 'room_name': 'default',
-                                             'token': token})
+                                             'token': token, 'username': auth_user})
