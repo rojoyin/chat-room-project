@@ -20,5 +20,6 @@ foo@bar:~$ docker-compose up
 foo@bar:~$  docker-compose run --rm app sh -c "python manage.py migrate"
 ```
 this will apply the migrations contained in the project, generating the tables and schemas as defined.
+
   4. To be able to login, please go [here](http://localhost:8000/login/) and you can signup [here](http://localhost:8000/signup/). Mind the specifications of password and user creation.
   5. Once you login, you will be redirected to the defatult chatroom.
