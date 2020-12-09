@@ -13,7 +13,7 @@ This project creates a chatroom application and a bot that queries the close pri
   2. Ensure you are at the root folder of the project, and issue the commands:
 ```
 foo@bar:~$ docker-compose build
-foo@bar:~$ docker-compose up
+foo@bar:~$ docker-compose up -d
 ```
   3. In other terminal in the same root folder of the repository, issue the command:
 ```
@@ -23,7 +23,10 @@ This will apply the migrations contained in the project, generating the tables a
 
   4. To be able to login, please go [here](http://localhost:8000/login/) and you can signup [here](http://localhost:8000/signup/). Mind the specifications of password and user creation.
   5. Once you login, you will be redirected to the defatult chatroom.
-
+  6. To finish the app execution, please use the command:
+```
+foo@bar:~$  docker-compose down
+```
 ## ToDo
   - Implement the chat services using [channels](https://channels.readthedocs.io)
   - Add support for CRUD operations on chat rooms, so multiple chat rooms could be managed.
