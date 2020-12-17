@@ -17,15 +17,19 @@ foo@bar:~$ docker-compose up -d
 ```
   3. In other terminal in the same root folder of the repository, issue the command:
 ```
-foo@bar:~$  docker-compose run --rm app sh -c "python manage.py migrate"
+foo@bar:~$ docker-compose run --rm app sh -c "python manage.py migrate"
 ```
 This will apply the migrations contained in the project, generating the tables and schemas as defined.
 
   4. To be able to login, please go [here](http://localhost:8000/login/) and you can signup [here](http://localhost:8000/signup/). Mind the specifications of password and user creation.
-  5. Once you login, you will be redirected to the defatult chatroom.
+  5. Once you log in, you will be redirected to the default chatroom.
   6. To finish the app execution, please use the command:
 ```
-foo@bar:~$  docker-compose down
+foo@bar:~$ docker-compose down
+```
+  7. To run the unit tests implemented, please use the command
+```
+foo@bar:~$ docker-compose run --rm app sh -c "python manage.py test"
 ```
 ## ToDo
   - Implement the chat services using [channels](https://channels.readthedocs.io)
