@@ -13,7 +13,7 @@ services:
     volumes:
       - ./app:/app
     command: >
-      sh -c "python manage.py runserver 0.0.0.0:8000"
+      sh -c "python manage.py runserver 0.0.0.0:8000 && python setup.py"
     networks:
       - default
   bot:
