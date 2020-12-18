@@ -9,7 +9,7 @@ This project creates a chatroom application and a bot that queries the close pri
   - Other files related to django framework, git and python dependencies.
 
 ## How does it work?
-  1. Clone the repository
+  1. Clone the repository and create a .env file, following the structure of .env.dev
   2. In other terminal in the same root folder of the repository, issue the command:
 ```
 foo@bar:~$ docker-compose run --rm app sh -c "python manage.py migrate"
