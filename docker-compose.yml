@@ -27,6 +27,7 @@ services:
     depends_on:
       - app
       - redis
+      - initializer
     networks:
       - default
   redis:
@@ -52,6 +53,18 @@ services:
     depends_on:
       - app
       - redis
+      - initializer
+    networks:
+      - default
+  initializer:
+    build:
+      context: ./initializer
+    volumes:
+      - ./initializer:/initializer
+    command: >
+      sh -c "python initializer/setup.py"
+    depends_on:
+      - app
     networks:
       - default
 networks:

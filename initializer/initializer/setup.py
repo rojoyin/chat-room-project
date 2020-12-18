@@ -3,7 +3,8 @@ import json
 
 
 # Create bot user for testing
-url = "http://localhost:8000/api/user/create/"
+print('::::::::::::::::::::::::::INICIAL:::::::::::::::')
+url = "http://app:8000/api/user/create/"
 
 payload = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"username\"\r\n\r\nbot\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"password\"\r\n\r\n123rest@\r\n-----011000010111000001101001--\r\n"
 headers = {
